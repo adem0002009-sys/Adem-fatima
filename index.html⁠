@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دعوة زفاف | آدم & فاطمة</title>
+    <!-- خطوط عربية أنيقة من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f9f6f0;
+            --primary-color: #8c7355;
+            --accent-color: #d4af37;
+            --text-color: #333333;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        /* --- شاشة الظرف (Envelope Animation) --- */
+        #envelope-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #eae5d9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .envelope-card {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            border: 1px solid #e0d8c3;
+        }
+
+        .wax-seal {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #b8860b, #8b5a2b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: 'Amiri', serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px auto 0;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .wax-seal:hover {
+            transform: scale(1.08);
+        }
+
+        .open-hint {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* --- المحتوى الرئيسي --- */
+        #main-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 40px 20px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .hero h3 {
+            font-family: 'Amiri', serif;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .hero h1 {
+            font-family: 'Amiri', serif;
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            margin: 15px 0;
+        }
+
+        .date-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            background-color: var(--bg-color);
+            border-radius: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-top: 10px;
+        }
+
+        /* Countdown Timer */
+        .section-title {
+            text-align: center;
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin: 30px 0 15px;
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: space-around;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .time-box {
+            text-align: center;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .time-box label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Timeline Section */
+        .timeline {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-time {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* RSVP Form */
+        .rsvp-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #705a41;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #888;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شاشة الظرف التفاعلية -->
+    <div id="envelope-screen">
+        <div class="envelope-card">
+            <h3>دعوة زفاف</h3>
+            <p style="margin-top: 10px;">آدم & فاطمة</p>
+            <div class="wax-seal" onclick="openInvitation()">A & F</div>
+            <p class="open-hint">اضغط على الختم لفتح الدعوة</p>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي للموقع -->
+    <div id="main-content">
+        
+        <!-- القسم الرئيسي -->
+        <section class="hero">
+            <h3>تتشرف عائلتنا بدعوتكم لمشاركتنا فرحتنا</h3>
+            <h1>آدم & فاطمة</h1>
+            <p>قلبان... وبداية حكاية جديدة</p>
+            <div class="date-badge">2030 / 06 / 24</div>
+        </section>
+
+        <!-- العداد التنازلي -->
+        <h2 class="section-title">باقي على فرحتنا</h2>
+        <div class="countdown-container">
+            <div class="time-box">
+                <span id="days">00</span>
+                <label>أيام</label>
+            </div>
+            <div class="time-box">
+                <span id="hours">00</span>
+                <label>ساعات</label>
+            </div>
+            <div class="time-box">
+                <span id="minutes">00</span>
+                <label>دقائق</label>
+            </div>
+            <div class="time-box">
+                <span id="seconds">00</span>
+                <label>ثواني</label>
+            </div>
+        </div>
+
+        <!-- برنامج الحفل -->
+        <h2 class="section-title">برنامج الحفل</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <span>استقبال الضيوف</span>
+                <span class="timeline-time">07:00 مساءً</span>
+            </div>
+            <div class="timeline-item">
+                <span>مراسم عقد القران</span>
+                <span class="timeline-time">08:00 مساءً</span>
+            </div>
+            <div class="timeline-item">
+                <span>مأدبة العشاء</span>
+                <span class="timeline-time">09:00 مساءً</span>
+            </div>
+            <div class="timeline-item">
+                <span>الاحتفال والتقاط الصور</span>
+                <span class="timeline-time">10:00 مساءً</span>
+            </div>
+        </div>
+
+        <!-- تأكيد الحضور -->
+        <h2 class="section-title">تأكيد الحضور</h2>
+        <div class="rsvp-section">
+            <form id="rsvpForm" onsubmit="handleRSVP(event)">
+                <div class="form-group">
+                    <label>الاسم الكريم</label>
+                    <input type="text" id="guestName" required placeholder="أدخل اسمك هنا">
+                </div>
+                <div class="form-group">
+                    <label>هل ستشاركنا فرحتنا؟</label>
+                    <select id="attendance">
+                        <option value="yes">بكل سرور، سأحضر</option>
+                        <option value="no">أعتذر عن الحضور</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>كلمة أو تهنئة للعروسين</label>
+                    <textarea id="message" rows="3" placeholder="اكتب أمنياتك الطيبة..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">تأكيد الحضور</button>
+            </form>
+        </div>
+
+        <footer>
+            <p>ننتظركم بشوق لمشاركتنا أجمل اللحظات ❤️</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // فتح الدعوة عند الضغط على الختم الشمعي
+        function openInvitation() {
+            const envelope = document.getElementById('envelope-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            envelope.style.opacity = '0';
+            setTimeout(() => {
+                envelope.style.visibility = 'hidden';
+                mainContent.style.visibility = 'visible';
+                mainContent.style.opacity = '1';
+            }, 1000);
+        }
+
+        // إعداد العداد التنازلي لعام 2030
+        const weddingDate = new Date('June 24, 2030 19:00:00').getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? '0' + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.querySelector(".countdown-container").innerHTML = "<h3>مبارك للعروسين!</h3>";
+            }
+        }, 1000);
+
+        // معالجة نموذج تأكيد الحضور
+        function handleRSVP(e) {
+            e.preventDefault();
+            const name = document.getElementById('guestName').value;
+            alert(`شكراً لك يا ${name}، تم استلام ردك بنجاح!`);
+            document.getElementById('rsvpForm').reset();
+        }
+    </script>
+</body>
+</html>
